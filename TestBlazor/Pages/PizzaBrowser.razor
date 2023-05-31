@@ -1,0 +1,62 @@
+﻿@page "/pizza"
+@using TestBlazor.Data
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<div class="main">
+    <h3>Welcome to Blazor's Pizza Service</h3>
+
+    <p>@welcomeMsg</p>
+
+    @if (pizzas == null)
+    {
+        <p>We're looking for pizzas! ...</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Pizza Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Vege/Vegan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pizza in pizzas)
+                {
+                    <tr>
+                        <td>@pizza.Name</td>
+                        <td>@pizza.Description</td>
+                        <td>$@pizza.Price</td>
+                        <td>
+                            @if (@pizza.Vegetarian == true)
+                            {
+                                <div class="tick">&#10004</div>
+                            }
+                            @if (@pizza.Vegan == true)
+                            {
+                                <div class="tick">&#10004</div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+@code {
+    private string welcomeMsg = "Do you like Pizza?"; 
+
+    private List<Pizza>? pizzas; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        pizzas = await HttpClient.GetFromJsonAsync<List<Pizza>>(NavigationManager.BaseUri + "circles");
+    }
+}

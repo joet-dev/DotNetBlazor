@@ -1,0 +1,11 @@
+﻿table {
+    border-collapse: collapse;
+    text-align: center;
+}
+td, th {
+    border: 2px solid #ddd; 
+}
+
+.tick { 
+    color: forestgreen;
+}
